@@ -1,0 +1,25 @@
+
+version: 2
+
+models:
+  - name: daily_candles
+    columns:
+      - name: symbol
+        data_tests:
+          - not_null
+
+      - name: trading_date
+        data_tests:
+          - not_null
+
+      - name: daily_close
+        data_tests:
+          - not_null
+
+  - name: daily_returns
+    columns:
+      - name: daily_return_pct
+        data_tests:
+          - not_null:
+              config:
+                severity: warn
