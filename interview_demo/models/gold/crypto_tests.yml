@@ -15,6 +15,10 @@ models:
       - name: daily_close
         data_tests:
           - not_null
+          
+      - name: daily_volume
+        data_tests:
+          - not_null
 
   - name: daily_returns
     columns:
