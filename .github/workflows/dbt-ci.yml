@@ -1,0 +1,47 @@
+
+name: dbt CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-yaml:
+    name: Validate YAML files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PyYAML
+        run: pip install PyYAML
+
+      - name: Validate YAML syntax
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          files = list(Path("interview_demo").rglob("*.yml"))
+          files += list(Path("interview_demo").rglob("*.yaml"))
+
+          if not files:
+              raise SystemExit("No YAML files found")
+
+          for file in files:
+              with file.open(encoding="utf-8") as f:
+                  yaml.safe_load(f)
+              print(f"PASS: {file}")
+
+          print(f"Validated {len(files)} YAML files")
+          PY
